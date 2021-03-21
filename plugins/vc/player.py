@@ -185,6 +185,39 @@ async def play_track(client, m: Message):
     await m.delete()
 
 
+@Client.on_message(filters.group
+                   & ~filters.edited
+                   & current_vc
+                   & filters.audio)
+async def autoplay(client, m: Message):
+    group_call = mp.group_call
+    playlist = mp.playlist
+    # check already added
+    if playlist and playlist[-1].audio.file_unique_id \
+            == m.audio.file_unique_id:
+        reply = await m.reply_text(f"{emoji.ROBOT} already added")
+        await _delay_delete_messages((reply, ), DELETE_DELAY)
+        return
+    # add to playlist
+    playlist.append(m)
+    if len(playlist) == 1:
+        m_status = await m.reply_text(
+            f"{emoji.INBOX_TRAY} downloading and transcoding..."
+        )
+        await download_audio(playlist[0])
+        group_call.input_filename = os.path.join(
+            client.workdir,
+            DEFAULT_DOWNLOAD_DIR,
+            f"{playlist[0].audio.file_unique_id}.raw"
+        )
+        await mp.update_start_time()
+        await m_status.delete()
+        print(f"- START PLAYING: {playlist[0].audio.title}")
+    await mp.send_playlist()
+    for track in playlist[:2]:
+        await download_audio(track)
+
+
 @Client.on_message(main_filter
                    & current_vc
                    & filters.regex("^(\\/|!)current$"))

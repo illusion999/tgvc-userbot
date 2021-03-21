@@ -10,7 +10,7 @@ It's recommended to use [tgmusicbot](https://github.com/callsmusic/tgmusicbot) a
 
 ## Deploy to Heroku
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/callsmusic/tgvc-userbot/tree/dev)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/callsmusic/tgvc-userbot/tree/autoplay)
 
 - Session string can be exported by using Pyrogram
   ```
