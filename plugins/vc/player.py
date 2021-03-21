@@ -193,6 +193,8 @@ async def autoplay(client, m: Message):
     group_call = mp.group_call
     playlist = mp.playlist
     # check already added
+    if m.audio.duration > 600:
+        return
     if playlist and playlist[-1].audio.file_unique_id \
             == m.audio.file_unique_id:
         reply = await m.reply_text(f"{emoji.ROBOT} already added")
